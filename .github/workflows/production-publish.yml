@@ -57,6 +57,8 @@ jobs:
           tags: |
             ${{ env.IMAGE_VERSION_TAG }}
             ${{ env.IMAGE_LATEST_TAG }}
+          labels: |
+            org.opencontainers.image.description: "Base image for PRODUCTION"
 
       - name: Sign Published Image using Cosign # https://github.com/sigstore/cosign
         env:

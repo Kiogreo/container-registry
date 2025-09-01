@@ -18,14 +18,12 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  IMAGE_TAG: ${{ github.ref_name }}
+  IMAGE_LATEST_TAG: "${{ github.repository }}:latest"
+  IMAGE_VERSION_TAG: "${{ github.repository }}:${{ github.ref_name }}"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_LATEST_TAG: "${{ github.env.IMAGE_NAME }}:latest"
-      IMAGE_VERSION_TAG: "${{ github.env.IMAGE_NAME }}:${{ github.env.IMAGE_TAG }}"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -47,7 +45,7 @@ jobs:
         name: Extract Docker Metadata # Extract image's metadata (https://github.com/docker/metadata-action)
         uses: docker/metadata-action@v5.8.0
         with:
-          images: ${{ github.env.IMAGE_NAME }}
+          images: ${{ env.IMAGE_NAME }}
 
       - id: build-and-push
         name: Build (using Buildx) and Push Docker Image # (https://github.com/docker/build-push-action)

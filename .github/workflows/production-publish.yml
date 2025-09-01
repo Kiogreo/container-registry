@@ -10,21 +10,22 @@ on:
     tags:
       - "v**"
 
+permissions:
+  contents: read
+  packages: write
+  id-token: write # This is used to complete the identity challenge with Sigstore's package when running outside of PRs.
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  IMAGE_TAG: "production:${{ github.ref_name }}"
+  IMAGE_TAG: ${{ github.ref_name }}
 
 jobs:
   build:
+    runs-on: ubuntu-latest
     env:
       IMAGE_LATEST_TAG: "${{ github.env.IMAGE_NAME }}:latest"
       IMAGE_VERSION_TAG: "${{ github.env.IMAGE_NAME }}:${{ github.env.IMAGE_TAG }}"
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      id-token: write # This is used to complete the identity challenge with Sigstore's package when running outside of PRs.
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4

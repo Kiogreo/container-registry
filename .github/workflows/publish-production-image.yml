@@ -16,7 +16,7 @@ env:
 
 jobs:
   build:
-    if: github.event.base_ref == 'refs/heads/production'
+    # if: github.event.base_ref == 'refs/heads/production'
     runs-on: ubuntu-latest
     environment: production
     permissions:

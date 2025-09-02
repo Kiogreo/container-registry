@@ -11,7 +11,8 @@ on:
       - "v**"
 
 permissions:
-  contents: read
+  actions: write
+  contents: write
   packages: write
   id-token: write # This is used to complete the identity challenge with Sigstore's package when running outside of PRs.
 
@@ -23,7 +24,9 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on:
+      - ubuntu-latest
+      - self-hosted
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -58,7 +61,7 @@ jobs:
             ${{ env.IMAGE_VERSION_TAG }}
             ${{ env.IMAGE_LATEST_TAG }}
           labels: |
-            org.opencontainers.image.description: "Base image for PRODUCTION"
+            org.opencontainers.image.description: "PRODUCTION: Example description"
 
       - name: Sign Published Image using Cosign # https://github.com/sigstore/cosign
         env:

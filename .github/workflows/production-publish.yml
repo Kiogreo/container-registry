@@ -5,8 +5,8 @@ name: Publish Production Docker Image
 
 on:
   push:
-    branches:
-      - production
+    tags:
+      - v*
 
 env:
   REGISTRY: ghcr.io
@@ -16,9 +16,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
-    env:
-      IMAGE_TAG_LATEST: "${{ github.env.REGISTRY }}/${{ github.repository }}:latest"
-      IMAGE_TAG_VERSION: "${{ github.env.REGISTRY }}/${{ github.repository }}:${{ github.ref_name }}"
     permissions:
       contents: read
       packages: write
@@ -48,8 +45,8 @@ jobs:
           push: true
           labels: ${{ steps.extract-metadata.outputs.labels }}
           tags: |
-            ${{ env.IMAGE_TAG_VERSION }}
-            ${{ env.IMAGE_TAG_LATEST }}
+            "${{ env.REGISTRY }}/${{ github.repository }}:latest"
+            "${{ env.REGISTRY }}/${{ github.repository }}:${{ github.ref_name }}"
       - name: Sign Image Artifact # Generate artifact attestation (https://docs.github.com/en/actions/concepts/security/artifact-attestations)
         uses: actions/attest-build-provenance@v2
         with:

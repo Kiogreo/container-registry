@@ -11,13 +11,14 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  IMAGE_TAG_LATEST: "${{ github.repository }}:latest"
-  IMAGE_TAG_VERSION: "${{ github.repository }}:${{ github.ref_name }}"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
+    env:
+      IMAGE_TAG_LATEST: "${{ github.env.REGISTRY }}/${{ github.repository }}:latest"
+      IMAGE_TAG_VERSION: "${{ github.env.REGISTRY }}/${{ github.repository }}:${{ github.ref_name }}"
     permissions:
       contents: read
       packages: write

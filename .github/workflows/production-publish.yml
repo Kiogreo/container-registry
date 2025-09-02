@@ -27,7 +27,7 @@ jobs:
       id-token: write # This is used to complete the identity challenge with Sigstore's package when running outside of PRs.
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Sigstore's Cosign package
         uses: sigstore/cosign-installer@v3.9.2 # https://github.com/sigstore/cosign#quick-start

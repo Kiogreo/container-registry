@@ -39,6 +39,9 @@ jobs:
         uses: docker/metadata-action@v5.8.0
         with:
           images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+          tags: |
+            type=ref,event=tag
+            type=raw,value=latest
       - id: build-and-push
         name: Build and Push Docker Image # (https://github.com/docker/build-push-action)
         uses: docker/build-push-action@v6
@@ -46,12 +49,10 @@ jobs:
           context: .
           push: true
           labels: ${{ steps.extract-metadata.outputs.labels }}
-          tags: |
-            "${{ env.REGISTRY }}/${{ github.repository }}:latest"
-            "${{ env.REGISTRY }}/${{ github.repository }}:${{ github.ref_name }}"
+          tags: ${{ steps.extract-metadata.outputs.tags }}
       - name: Sign Image Artifact # Generate artifact attestation (https://docs.github.com/en/actions/concepts/security/artifact-attestations)
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
           push-to-registry: true

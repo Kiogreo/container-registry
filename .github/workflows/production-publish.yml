@@ -5,6 +5,8 @@ name: Publish Production Docker Image
 
 on:
   push:
+    branches:
+      - production
     tags:
       - v*
 

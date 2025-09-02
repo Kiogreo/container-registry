@@ -1,7 +1,7 @@
 # SUMMARY:
 # Build, push, and sign Docker images to GHCR when production branch or version tags are pushed
 
-name: Publish Production Docker Image
+name: Publish Production Image
 
 on:
   push:
@@ -16,6 +16,7 @@ env:
 
 jobs:
   build:
+    if: github.event.base_ref == 'refs/heads/production'
     runs-on: ubuntu-latest
     environment: production
     permissions:

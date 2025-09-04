@@ -40,8 +40,9 @@ jobs:
         with:
           images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
           tags: |
-            type=ref,event=tag
-            type=raw,value=latest
+            type=ref,event=tag,prefix=production:
+          labels: |
+            
       - id: build-and-push
         name: Build and Push Docker Image # (https://github.com/docker/build-push-action)
         uses: docker/build-push-action@v6
@@ -56,14 +57,3 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
           push-to-registry: true
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          generate_release_notes: true
-          make_latest: true

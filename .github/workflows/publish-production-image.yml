@@ -52,7 +52,7 @@ jobs:
           labels: ${{ steps.extract-metadata.outputs.labels }}
           tags: ${{ steps.extract-metadata.outputs.tags }}
       - name: Sign Image Artifact # Generate artifact attestation (https://docs.github.com/en/actions/concepts/security/artifact-attestations)
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v3
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
